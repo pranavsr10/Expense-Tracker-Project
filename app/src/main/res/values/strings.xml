@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Expense Tracker Project</string>
+    <string name="app_name">Trip Tracker</string>
+    <string-array name="category_options">
+        <item>Food</item>
+        <item>Transport</item>
+        <item>Accommodation</item>
+        <item>Other</item>
+    </string-array>
 </resources>
