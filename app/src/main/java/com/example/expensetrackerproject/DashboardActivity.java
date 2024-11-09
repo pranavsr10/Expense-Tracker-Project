@@ -2,61 +2,33 @@ package com.example.expensetrackerproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.expensetrackerproject.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
-    private ExpenseAdapter adapter;
-    private List<Expense> expenseList;
-    private DatabaseReference databaseReference;
+
+    FloatingActionButton addExpenseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        FloatingActionButton fab = findViewById(R.id.addExpenseFab);
+        // Initialize the FAB
+        addExpenseButton = findViewById(R.id.fab_add_expense);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        expenseList = new ArrayList<>();
-        adapter = new ExpenseAdapter(expenseList, this);
-        recyclerView.setAdapter(adapter);
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("expenses");
-
-        fetchExpensesFromDatabase();
-
-        fab.setOnClickListener(v -> startActivity(new Intent(DashboardActivity.this, AddEditExpenseActivity.class)));
-    }
-
-    private void fetchExpensesFromDatabase() {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        addExpenseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                expenseList.clear();
-                for (DataSnapshot expenseSnapshot : snapshot.getChildren()) {
-                    Expense expense = expenseSnapshot.getValue(Expense.class);
-                    expenseList.add(expense);
-                }
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Handle error
+            public void onClick(View v) {
+                // Launch AddExpenseActivity when FAB is clicked
+                Intent intent = new Intent(DashboardActivity.this, AddEditExpenseActivity.class);
+                startActivity(intent);
             }
         });
+
+        // Set up other UI components to display total expenses and breakdown (use Firebase or local data)
     }
 }

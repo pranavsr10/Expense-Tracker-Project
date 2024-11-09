@@ -21,6 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Dashboard Activity -->
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".AddEditExpenseActivity"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

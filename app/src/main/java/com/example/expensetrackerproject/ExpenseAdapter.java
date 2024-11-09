@@ -5,47 +5,53 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
-    private List<Expense> expenses;
-    private Context context;
 
-    public ExpenseAdapter(List<Expense> expenses, Context context) {
-        this.expenses = expenses;
+    Context context;
+    List<Expense> expenseList;
+
+    public ExpenseAdapter(Context context, List<Expense> expenseList) {
         this.context = context;
-    }
-
-    @NonNull
-    @Override
-    public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.expense_item, parent, false);
-        return new ExpenseViewHolder(view);
+        this.expenseList = expenseList;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
-        Expense expense = expenses.get(position);
-        holder.expenseName.setText(expense.getName());
+    public ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(context).inflate(R.layout.expense_item, parent, false);
+        return new ExpenseViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(ExpenseViewHolder holder, int position) {
+        Expense expense = expenseList.get(position);
+        holder.name.setText(expense.getName());
         holder.amount.setText(String.valueOf(expense.getAmount()));
         holder.category.setText(expense.getCategory());
+        holder.date.setText(expense.getDate());
     }
 
     @Override
     public int getItemCount() {
-        return expenses.size();
+        return expenseList.size();
     }
 
-    static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView expenseName, amount, category;
+    public void updateList(List<Expense> updatedList) {
+        expenseList = updatedList;
+        notifyDataSetChanged();
+    }
+
+    public class ExpenseViewHolder extends RecyclerView.ViewHolder {
+        TextView name, amount, category, date;
 
         public ExpenseViewHolder(View itemView) {
             super(itemView);
-            expenseName = itemView.findViewById(R.id.expenseName);
-            amount = itemView.findViewById(R.id.amount);
-            category = itemView.findViewById(R.id.category);
+            name = itemView.findViewById(R.id.expense_name);
+            amount = itemView.findViewById(R.id.expense_amount);
+            category = itemView.findViewById(R.id.expense_category);
+            date = itemView.findViewById(R.id.expense_date);
         }
     }
 }
